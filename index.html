@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tobacco Cessation Program</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: url('IMAGE.jpeg') no-repeat center center fixed;
+            background-size: contain;
+            background-color: #f0f0f0;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: None;
+            width: 100%;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            margin: 20px auto;
+            animation: fadeInUp 0.6s ease-out;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto; 
+        }
+
+        #landingPage.card {
+            max-width: 800px;
+            width: 95%;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .event-name {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #030c34, #070840);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            background: white;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #a34e48, #ce7171);
+            color: white;
+            padding: 18px 35px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin: 15px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #28a745, #20c997);
+        }
+
+        .btn-info {
+            background: linear-gradient(45deg, #a34e48, #ce7171);
+        }
+
+        .btn-dark {
+            background: linear-gradient(45deg, #6c757d, #495057);
+        }
+
+        .btn-danger {
+            background: linear-gradient(45deg, #dc3545, #c82333);
+        }
+
+        .pledge-section {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 25px 0;
+            border-left: 6px solid #a34e48;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .pledge-text {
+            font-size: 16px;
+            line-height: 1.8;
+            color: linear-gradient(45deg, #a34e48, #ce7171);
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin-top: 5px;
+            transform: scale(1.2);
+        }
+
+        .checkbox-group label {
+            margin-bottom: 0;
+            font-size: 15px;
+            line-height: 1.6;
+            text-transform: none;
+            letter-spacing: normal;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .success-message {
+            background: linear-gradient(45deg, #a34e48, #ce7171);
+            color: #ffffff;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            border: 1px solid #c3e6cb;
+            text-align: center;
+        }
+
+        .user-record {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .storage-info {
+            background: linear-gradient(45deg, #a34e48, #ce7171);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #9d453e;
+            font-size: 14px;
+        }
+
+        .data-actions {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        .data-actions .btn {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .card {
+                padding: 25px;
+            }
+
+            .data-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Landing Page -->
+        <div id="landingPage" class="card">
+            <div class="header">
+                <h1>Welcome to Tobacco Cessation Program Registration Portal</h1>
+                <div class="storage-info">
+                    <strong>Current Storage Status:</strong>
+                    <span id="storageStatus">Loading...</span>
+                </div>
+                <button class="btn" onclick="showRegistrationPage()">
+                    🎓 Register to take pledge
+                </button>
+                <button class="btn btn-info" onclick="showAdminPanel()">
+                    Admin Panel
+                </button>
+            </div>
+        </div>
+
+        <!-- Registration Page -->
+         <div id="registrationPage" class="card hidden">
+            <div class="header">
+                <div class="college-info" style="flex-direction: column; align-items: center;">
+                    <img src="CLG NAME.jpeg" alt="College Banner" style="max-width: 100%; height: auto; margin-bottom: 10px;">
+                    <div class="event-name" style="text-align: center; font-size: 28px; font-weight: bold; color: #000000;">
+                        Fill in your details to take the Tobacco Cessation Pledge
+                    </div>
+                </div>
+            </div>
+
+            <form id="registrationForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Full Name *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="age">Age *</label>
+                        <input type="number" id="age" name="age" min="16" max="100" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="gender">Gender *</label>
+                        <select id="gender" name="gender" required>
+                            <option value="">Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="dob">Date of Birth *</label>
+                        <input type="date" id="dob" name="dob" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="pincode">Pin Code *</label>
+                        <input type="text" id="pincode" name="pincode" pattern="[0-9]{6}" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Address *</label>
+                    <textarea id="address" name="address" rows="3" required></textarea>
+                </div>
+
+                <button type="button" class="btn" onclick="createPledge()">Take Pledge</button>
+            </form>
+
+            <div id="pledgeSection" class="pledge-section hidden">
+                <div class="pledge-text">
+                    <strong>Pledge:</strong><br>
+                    I pledge today that " I value my life and health. I choose to stay away from tobacco in any form (smoke/smokeless). I will not start. If I have, I will quit I will encourage others to do the same"
+                    NO TO TOBACCO & YES TO MY LIFE
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="agreement" name="agreement">
+                    <label for="agreement">
+                        This pledge is voluntary.
+                        Your name and details will be kept confidential
+                        The pledge is for awareness only, not a legal document.
+                        By ticking the box, you agree to support a tobacco-free life.
+                    </label>
+                </div>
+
+                <button type="button" class="btn" onclick="submitRegistration()" id="submitBtn" disabled>
+                    <span id="submitText">Submit</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Success Page -->
+        <div id="successPage" class="card hidden">
+            <div class="success-message">
+                <h2>Registration Successful!</h2>
+                <p>Thank you for registering. Your certificate is ready for download.</p>
+                <p><strong>Registration ID:</strong> <span id="registrationId"></span></p>
+            </div>
+            <button class="btn" onclick="downloadCertificate()">
+                Download Certificate
+            </button>
+            <button class="btn btn-dark" onclick="resetForm()">
+                Go back to Registeration Page
+            </button>
+        </div>
+
+        <!-- User Data Display -->
+        <div id="userDataPage" class="card hidden">
+            <h2>📊 Registered Users</h2>
+            <div class="storage-info">
+                <strong>Total Registrations:</strong> <span id="totalCount">0</span><br>
+                <strong>Storage Used:</strong> <span id="storageUsed">0 KB</span>
+            </div>
+            <div class="data-actions">
+                <button class="btn btn-info" onclick="exportData()">Export Data (JSON)</button>
+                <button class="btn btn-info" onclick="importData()">Import Data</button>
+                <button class="btn btn-dark" onclick="clearAllData()">Clear All Data</button>
+            </div>
+            <div id="userDataContainer"></div>
+            <button class="btn" onclick="hideUserData()">Back</button>
+        </div>
+
+        <!-- Admin Panel -->
+        <div id="adminPanel" class="card hidden">
+            <h2>👨‍💼 Admin Panel</h2>
+            <div class="storage-info">
+                <strong>System Status:</strong> Online<br>
+                <strong>Total Registrations:</strong> <span id="adminTotalCount">0</span><br>
+                <strong>Last Updated:</strong> <span id="lastUpdated">Never</span>
+            </div>
+            <div class="data-actions">
+                <button class="btn btn-info" onclick="showUserData()">View All Data</button>
+                <button class="btn btn-info" onclick="backupData()">Backup Data</button>
+                <button class="btn btn-dark" onclick="goHome()">Back to Home</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Storage utility functions
+        const StorageManager = {
+            // Save data to localStorage
+            saveData: function(key, data) {
+                try {
+                    localStorage.setItem(key, JSON.stringify(data));
+                    this.updateLastModified();
+                    return true;
+                } catch (error) {
+                    console.error('Failed to save data:', error);
+                    return false;
+                }
+            },
+
+            // Load data from localStorage
+            loadData: function(key, defaultValue = []) {
+                try {
+                    const data = localStorage.getItem(key);
+                    return data ? JSON.parse(data) : defaultValue;
+                } catch (error) {
+                    console.error('Failed to load data:', error);
+                    return defaultValue;
+                }
+            },
+
+            // Clear specific data
+            clearData: function(key) {
+                try {
+                    localStorage.removeItem(key);
+                    this.updateLastModified();
+                    return true;
+                } catch (error) {
+                    console.error('Failed to clear data:', error);
+                    return false;
+                }
+            },
+
+            // Get storage size
+            getStorageSize: function() {
+                let total = 0;
+                for (let key in localStorage) {
+                    if (localStorage.hasOwnProperty(key)) {
+                        total += localStorage[key].length;
+                    }
+                }
+                return Math.round(total / 1024); // Return in KB
+            },
+
+            // Update last modified timestamp
+            updateLastModified: function() {
+                localStorage.setItem('lastModified', new Date().toISOString());
+            },
+
+            // Get last modified timestamp
+            getLastModified: function() {
+                return localStorage.getItem('lastModified') || 'Never';
+            }
+        };
+
+        // Global variables
+        let userData = [];
+        let currentUser = {};
+        const STORAGE_KEY = 'tobaccoCessationRegistrations';
+
+        // Initialize app
+        function initApp() {
+            // Load existing data from localStorage
+            userData = StorageManager.loadData(STORAGE_KEY, []);
+            updateStorageInfo();
+            
+            // If no data exists, add demo data
+            if (userData.length === 0) {
+                StorageManager.saveData(STORAGE_KEY, userData);
+            }
+        }
+
+        // Generate unique ID
+        function generateId() {
+            return 'REG-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+        }
+
+        // Update storage information display
+        function updateStorageInfo() {
+            const totalCount = userData.length;
+            const storageSize = StorageManager.getStorageSize();
+            const lastModified = StorageManager.getLastModified();
+
+            // Update various display elements
+            const elements = [
+                { id: 'storageStatus', text: `${totalCount} registrations (${storageSize} KB used)` },
+                { id: 'totalCount', text: totalCount },
+                { id: 'adminTotalCount', text: totalCount },
+                { id: 'storageUsed', text: `${storageSize} KB` },
+                { id: 'lastUpdated', text: lastModified ? new Date(lastModified).toLocaleString() : 'Never' }
+            ];
+
+            elements.forEach(elem => {
+                const element = document.getElementById(elem.id);
+                if (element) element.textContent = elem.text;
+            });
+        }
+
+        // Navigation functions
+        function showRegistrationPage() {
+            document.getElementById('landingPage').classList.add('hidden');
+            document.getElementById('registrationPage').classList.remove('hidden');
+        }
+
+        function showAdminPanel() {
+            const password = prompt("Enter admin password:");
+            if (password !== "TCP2025") {
+                alert("Incorrect password!");
+                return;
+            }
+            updateStorageInfo();
+            document.getElementById('landingPage').classList.add('hidden');
+            document.getElementById('adminPanel').classList.remove('hidden');
+        }
+
+        function goHome() {
+            document.querySelectorAll('.card').forEach(card => card.classList.add('hidden'));
+            document.getElementById('landingPage').classList.remove('hidden');
+            updateStorageInfo();
+        }
+
+        // Create pledge section
+        function createPledge() {
+            const form = document.getElementById('registrationForm');
+            const formData = new FormData(form);
+            
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            currentUser = {
+                id: generateId(),
+                name: formData.get('name'),
+                age: formData.get('age'),
+                gender: formData.get('gender'),
+                phone: formData.get('phone'),
+                dob: formData.get('dob'),
+                address: formData.get('address'),
+                pincode: formData.get('pincode'),
+                timestamp: new Date().toLocaleString()
+            };
+
+            document.getElementById('pledgeSection').classList.remove('hidden');
+            document.getElementById('pledgeSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Handle agreement checkbox
+        document.getElementById('agreement').addEventListener('change', function() {
+            document.getElementById('submitBtn').disabled = !this.checked;
+        });
+
+        // Submit registration
+        function submitRegistration() {
+            const agreement = document.getElementById('agreement').checked;
+            
+            if (!agreement) {
+                alert('Please accept the agreement to proceed.');
+                return;
+            }
+
+            // Add to userData array and save to localStorage
+            userData.push({...currentUser});
+            StorageManager.saveData(STORAGE_KEY, userData);
+
+            // Update displays
+            updateStorageInfo();
+            document.getElementById('registrationId').textContent = currentUser.id;
+
+            // Show success page
+            document.getElementById('registrationPage').classList.add('hidden');
+            document.getElementById('successPage').classList.remove('hidden');
+        }
+
+        // Download certificate
+        
+        function downloadCertificate() {
+    const userName = currentUser.name || "Participant";
+    const img = new Image();
+    img.src = "cer.jpg"; // Must match your actual image file
+    img.crossOrigin = "anonymous";
+
+    img.onload = () => {
+        const { jsPDF } = window.jspdf;
+
+        const pdfWidth = img.naturalWidth;
+        const pdfHeight = img.naturalHeight;
+        const orientation = pdfWidth > pdfHeight ? "landscape" : "portrait";
+
+        const pdf = new jsPDF({
+            orientation: orientation,
+            unit: "px",
+            format: [pdfWidth, pdfHeight]
+        });
+
+        // Add background image
+        pdf.addImage(img, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+
+        // Add participant name (you can fine-tune X and Y)
+        pdf.setFont("helvetica", "bold");
+        pdf.setFontSize(pdfWidth / 25); // Scales text size with image width
+        pdf.setTextColor(0, 0, 0);
+        pdf.text(userName.toUpperCase(), pdfWidth / 2, pdfHeight * 0.55, {
+            align: "center"
+        });
+
+        pdf.save(`Certificate_${userName.replace(/\s+/g, "_")}.pdf`);
+    };
+
+    img.onerror = () => {
+        alert("❌ Failed to load cer.jpg. Make sure it's in the same folder as your HTML and named correctly.");
+    };
+}
+
+
+        // Show user data
+        function showUserData() {
+            const container = document.getElementById('userDataContainer');
+            
+            if (userData.length === 0) {
+                container.innerHTML = '<p>No registrations found.</p>';
+            } else {
+                let html = '';
+                userData.forEach((user, index) => {
+                    html += `
+                        <div class="user-record">
+                            <h4>${index + 1}. ${user.name} (ID: ${user.id || 'N/A'})</h4>
+                            <p><strong>Age:</strong> ${user.age} | <strong>Gender:</strong> ${user.gender}</p>
+                            <p><strong>Phone:</strong> ${user.phone} | <strong>DOB:</strong> ${user.dob}</p>
+                            <p><strong>Address:</strong> ${user.address}</p>
+                            <p><strong>Pin Code:</strong> ${user.pincode}</p>
+                            <p><strong>Registered:</strong> ${user.timestamp}</p>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+            }
+
+            updateStorageInfo();
+            document.querySelectorAll('.card').forEach(card => card.classList.add('hidden'));
+            document.getElementById('userDataPage').classList.remove('hidden');
+        }
+
+        // Hide user data
+        function hideUserData() {
+            document.getElementById('userDataPage').classList.add('hidden');
+            document.getElementById('successPage').classList.remove('hidden');
+        }
+
+        // Export data
+        function exportData() {
+            const dataStr = JSON.stringify(userData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `tobacco_cessation_registrations_${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Import data
+        function importData() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        try {
+                            const importedData = JSON.parse(e.target.result);
+                            if (Array.isArray(importedData)) {
+                                userData = importedData;
+                                StorageManager.saveData(STORAGE_KEY, userData);
+                                updateStorageInfo();
+                                showUserData();
+                                alert('Data imported successfully!');
+                            } else {
+                                alert('Invalid file format!');
+                            }
+                        } catch (error) {
+                            alert('Error importing data: ' + error.message);
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            };
+            input.click();
+        }
+
+        // Clear all data
+        function clearAllData() {
+            if (confirm('Are you sure you want to delete all registration data? This action cannot be undone!')) {
+                userData = [];
+                StorageManager.clearData(STORAGE_KEY);
+                updateStorageInfo();
+                showUserData();
+                alert('All data has been cleared!');
+            }
+        }
+
+        // Backup data
+        function backupData() {
+            exportData();
+            alert('Backup file downloaded successfully!');
+        }
+
+        // Reset form for new registration
+        function resetForm() {
+            document.getElementById('registrationForm').reset();
+            document.getElementById('pledgeSection').classList.add('hidden');
+            document.getElementById('agreement').checked = false;
+            document.getElementById('submitBtn').disabled = true;
+            currentUser = {};
+            
+            document.getElementById('successPage').classList.add('hidden');
+            document.getElementById('registrationPage').classList.remove('hidden');
+        }
+
+        // Initialize app when page loads
+        window.addEventListener('load', initApp);
+    </script>
+</body>
+</html>
